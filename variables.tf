@@ -45,8 +45,8 @@ variable "zone_id" {
 
 variable "grace_period" {
   type        = number
-  description = "The service startup grace period. We want this to be essentially infinite."
-  default     = 2147483647
+  description = "The service startup grace period. Should be high."
+  default     = 840
 }
 
 variable "memory" {
