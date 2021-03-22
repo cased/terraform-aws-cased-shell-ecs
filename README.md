@@ -36,6 +36,6 @@ module "cased-shell {
 Custom variables
 ------------------
 
-* memory. default is 1026MG
+* memory. default is 1024MB
 * cpu. default is 180
 

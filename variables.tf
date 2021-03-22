@@ -5,7 +5,7 @@ variable "vpc_id" {
 
 variable "env" {
   type        = string
-  description = "The environment you will use. Used to preface various names."
+  description = "The environment you will use. This is used to preface various names."
 }
 
 variable "cluster_id" {
@@ -40,7 +40,7 @@ variable "hostname" {
 
 variable "zone_id" {
   type        = string
-  description = "The Route53 zone id which will be associated with the hostname entry"
+  description = "The Route53 apex zone id which will be associated with the hostname entry"
 }
 
 variable "grace_period" {
@@ -51,8 +51,8 @@ variable "grace_period" {
 
 variable "memory" {
   type        = number
-  default     = 1026
-  description = "The memory allocated to the container"
+  default     = 1024
+  description = "The memory in MB allocated to the container"
 }
 
 variable "cpu" {
