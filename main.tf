@@ -52,7 +52,6 @@ resource "aws_ecs_task_definition" "definition" {
 
   network_mode       = "awsvpc"
   execution_role_arn = aws_iam_role.ecs-task-execution-role.arn
-  task_role_arn      = var.task_role_arn
 }
 
 # The container definition used for Cased Shell

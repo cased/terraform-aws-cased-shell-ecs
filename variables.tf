@@ -1,16 +1,16 @@
 variable "vpc_id" {
-  type       = string
-  desciption = "The id of the VPC for the NLB and the VPC."
+  type        = string
+  description = "The id of the VPC for the NLB and the VPC."
 }
 
 variable "env" {
-  type       = string
-  desciption = "The environment you will use. Used to preface various names."
+  type        = string
+  description = "The environment you will use. Used to preface various names."
 }
 
 variable "cluster_id" {
-  type       = string
-  desciption = "The id of the ECS cluster where the service will be deployed."
+  type        = string
+  description = "The id of the ECS cluster where the service will be deployed."
 }
 
 variable "security_group_ids" {
@@ -59,10 +59,4 @@ variable "cpu" {
   type        = number
   default     = 180
   description = "The CPU allocated to the container"
-}
-
-variable "task_role_arn" {
-  type        = string
-  default     = null
-  description = "Currently unused"
 }
