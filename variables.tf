@@ -33,6 +33,24 @@ variable "cased_shell_secret_arn" {
   description = "The ARN of a secret used for the CASED_SHELL_SECRET env variable"
 }
 
+variable "ssh_key_arn" {
+  type        = string
+  description = "The ARN of a secret used for the CASED_SHELL_SSH_PRIVATE_KEY env variable"
+  default     = null
+}
+
+variable "ssh_passphrase_arn" {
+  type        = string
+  description = "The string passphrase used for the CASED_SHELL_SSH_PASSPHRASE env variable"
+  default     = null
+}
+
+variable "ssh_username" {
+  type        = string
+  description = "The string username used for the CASED_SHELL_SSH_USERNAME env variable"
+  default     = null
+}
+
 variable "hostname" {
   type        = string
   description = "The hostname of the Cased Shell deployment, without protocol (e.g., 'webshell.example.com')"

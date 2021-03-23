@@ -64,8 +64,10 @@ module "cased-shell-container-definition" {
   container_memory             = var.memory
   container_memory_reservation = floor(var.memory / 3)
   container_cpu                = var.cpu
-  environment                  = local.environment
-  secrets                      = local.cased_shell_secrets
+  environment                  = concat(local.environment, var.ssh_username == null ? [] : [local.username])
+
+  # Concat these as secrets if their valueFrom/value is set
+  secrets = concat([local.shell_secret_string], var.ssh_key_arn == null ? [] : [local.private_key], var.ssh_passphrase_arn == null ? [] : [local.passphrase])
 
   port_mappings = [
     {
@@ -92,12 +94,25 @@ locals {
     },
   ]
 
-  cased_shell_secrets = [
-    {
-      name      = "CASED_SHELL_SECRET"
-      valueFrom = var.cased_shell_secret_arn
-    },
-  ]
+  username = {
+    name  = "CASED_SHELL_SSH_USERNAME"
+    value = var.ssh_username
+  }
+
+  shell_secret_string = {
+    name      = "CASED_SHELL_SECRET"
+    valueFrom = var.cased_shell_secret_arn
+  }
+
+  private_key = {
+    name      = "CASED_SHELL_SSH_PRIVATE_KEY"
+    valueFrom = var.ssh_key_arn
+  }
+
+  passphrase = {
+    name      = "CASED_SHELL_SSH_PASSPHRASE"
+    valueFrom = var.ssh_passphrase_arn
+  }
 }
 
 
