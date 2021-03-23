@@ -12,7 +12,7 @@ Basic usage
 ```terraform
 module "cased-shell {
     source  = "cased/terraform-aws-cased-shell-ecs"
-    version = "0.1.0"
+    version = "0.1.4"
 
     # The environment, and the id of the vpc and the cluster where the service will run
     env         = "prod"
