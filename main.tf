@@ -23,40 +23,40 @@ resource "aws_ecs_service" "service" {
 
   # Here we connect to the NLB via the target groups that are specified
   load_balancer {
-    target_group_arn = aws_lb_target_group.cased-shell-target-80.arn
+    target_group_arn = aws_lb_target_group.cased_shell_target_80.arn
     container_port   = 80
     container_name   = local.base_name
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.cased-shell-target-443.arn
+    target_group_arn = aws_lb_target_group.cased_shell_target_443.arn
     container_port   = 443
     container_name   = local.base_name
   }
 
   depends_on = [
-    aws_lb_target_group.cased-shell-target-80,
-    aws_lb_target_group.cased-shell-target-443
+    aws_lb_target_group.cased_shell_target_80,
+    aws_lb_target_group.cased_shell_target_443
   ]
 }
 
 # The task definition used for Cased Shell
 resource "aws_ecs_task_definition" "definition" {
-  family = "${var.env}-cased-shell-service-definition"
+  family = "${var.env}_cased_shell_service_definition"
 
   container_definitions = <<EOF
     [
-     ${module.cased-shell-container-definition.json_map}
+     ${module.cased_shell_container_definition.json_map}
     ]
   EOF
 
   network_mode       = "awsvpc"
-  execution_role_arn = aws_iam_role.ecs-task-execution-role.arn
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 }
 
 # The container definition used for Cased Shell
-module "cased-shell-container-definition" {
-  source  = "cloudposse/ecs-container-definition/aws"
+module "cased_shell_container_definition" {
+  source  = "cloudposse/ecs_container_definition/aws"
   version = "0.21.0"
 
   container_name               = local.base_name
@@ -85,7 +85,7 @@ module "cased-shell-container-definition" {
 
 locals {
 
-  base_name = "${var.env}-cased-shell"
+  base_name = "${var.env}_cased_shell"
 
   environment = [
     {
@@ -120,7 +120,7 @@ locals {
 
 
 # Allow a role to read secrets from SSM, secrets manager, and use KMS
-data "aws_iam_policy_document" "read-secrets" {
+data "aws_iam_policy_document" "read_secrets" {
   statement {
     actions = [
       "ssm:GetParameters",
@@ -137,13 +137,13 @@ data "aws_iam_policy_document" "read-secrets" {
 }
 
 # Allow ECS to assume role for task execution
-data "aws_iam_policy_document" "ecs-tasks-policy" {
+data "aws_iam_policy_document" "ecs_tasks_policy" {
   statement {
     actions = ["sts:AssumeRole"]
 
     principals {
       type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
+      identifiers = ["ecs_tasks.amazonaws.com"]
     }
   }
 }
@@ -153,22 +153,22 @@ data "aws_iam_policy_document" "ecs-tasks-policy" {
 # and represents the permissions for the Docker container itself.
 
 # The role itself
-resource "aws_iam_role" "ecs-task-execution-role" {
-  name               = "ecs-task-exec-role-${local.base_name}"
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name               = "ecs_task_exec_role_${local.base_name}"
   path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.ecs-tasks-policy.json
+  assume_role_policy = data.aws_iam_policy_document.ecs_tasks_policy.json
 }
 
-# Add the read-secrets policy to the ecs task execution role
-resource "aws_iam_role_policy" "read-secrets-policy" {
-  policy = data.aws_iam_policy_document.read-secrets.json
-  role   = aws_iam_role.ecs-task-execution-role.id
+# Add the read_secrets policy to the ecs task execution role
+resource "aws_iam_role_policy" "read_secrets_policy" {
+  policy = data.aws_iam_policy_document.read_secrets.json
+  role   = aws_iam_role.ecs_task_execution_role.id
 }
 
 # Attach the general ECS Task execution role policy to the ecs task execution role
-resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-  role       = aws_iam_role.ecs-task-execution-role.name
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/service_role/AmazonECSTaskExecutionRolePolicy"
+  role       = aws_iam_role.ecs_task_execution_role.name
 }
 
 
@@ -177,37 +177,37 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-attachment" {
 # The Cased Shell NLB forwards IP traffic on 80 and 443 to targets on those
 # same ports.
 
-resource "aws_lb" "cased-shell-nlb" {
-  name               = "${local.base_name}-nlb"
+resource "aws_lb" "cased_shell_nlb" {
+  name               = "${local.base_name}_nlb"
   internal           = false
   load_balancer_type = "network"
   subnets            = var.nlb_subnet_ids
 }
 
-resource "aws_lb_listener" "cased-shell-listener-80" {
-  load_balancer_arn = aws_lb.cased-shell-nlb.arn
+resource "aws_lb_listener" "cased_shell_listener_80" {
+  load_balancer_arn = aws_lb.cased_shell_nlb.arn
   port              = "80"
   protocol          = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.cased-shell-target-80.arn
+    target_group_arn = aws_lb_target_group.cased_shell_target_80.arn
   }
 }
 
-resource "aws_lb_listener" "cased-shell-listener-443" {
-  load_balancer_arn = aws_lb.cased-shell-nlb.arn
+resource "aws_lb_listener" "cased_shell_listener_443" {
+  load_balancer_arn = aws_lb.cased_shell_nlb.arn
   port              = "443"
   protocol          = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.cased-shell-target-443.arn
+    target_group_arn = aws_lb_target_group.cased_shell_target_443.arn
   }
 }
 
-resource "aws_lb_target_group" "cased-shell-target-80" {
-  name_prefix = "t-cs8"
+resource "aws_lb_target_group" "cased_shell_target_80" {
+  name_prefix = "t_cs8"
   port        = 80
   target_type = "ip"
   protocol    = "TCP"
@@ -221,9 +221,9 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
   health_check {
     healthy_threshold   = "5"
     unhealthy_threshold = "5"
-    matcher             = "200-399"
+    matcher             = "200_399"
     path                = "/_health"
-    port                = "traffic-port"
+    port                = "traffic_port"
     protocol            = "HTTP"
     interval            = "30"
   }
@@ -233,8 +233,8 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
   }
 }
 
-resource "aws_lb_target_group" "cased-shell-target-443" {
-  name_prefix = "t-cs4"
+resource "aws_lb_target_group" "cased_shell_target_443" {
+  name_prefix = "t_cs4"
   port        = 443
   target_type = "ip"
   protocol    = "TCP"
@@ -248,9 +248,9 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   health_check {
     healthy_threshold   = "5"
     unhealthy_threshold = "5"
-    matcher             = "200-399"
+    matcher             = "200_399"
     path                = "/_health"
-    port                = "traffic-port"
+    port                = "traffic_port"
     protocol            = "HTTPS"
     interval            = "30"
   }
@@ -263,14 +263,14 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
 
 ######## DNS and Route53 ######################################################
 
-resource "aws_route53_record" "cased-shell" {
+resource "aws_route53_record" "cased_shell" {
   zone_id = var.zone_id
   name    = var.hostname
   type    = "A"
 
   alias {
-    name                   = aws_lb.cased-shell-nlb.dns_name
-    zone_id                = aws_lb.cased-shell-nlb.zone_id
+    name                   = aws_lb.cased_shell_nlb.dns_name
+    zone_id                = aws_lb.cased_shell_nlb.zone_id
     evaluate_target_health = true
   }
 }
