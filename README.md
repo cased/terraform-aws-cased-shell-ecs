@@ -10,7 +10,7 @@ Basic usage
 ------------------
 
 ```terraform
-module "cased-shell {
+module "cased-shell" {
     source  = "cased/terraform-aws-cased-shell-ecs"
     version = "0.1.5"
 
