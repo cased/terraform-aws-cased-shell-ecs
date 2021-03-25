@@ -207,25 +207,25 @@ resource "aws_lb_listener" "cased-shell-listener-443" {
 }
 
 resource "aws_lb_target_group" "cased-shell-target-80" {
-  name_prefix = "t-cs8"
-  port        = 80
-  target_type = "ip"
-  protocol    = "TCP"
-  vpc_id      = var.vpc_id
-
+  name_prefix          = "t-cs8"
+  port                 = 80
+  target_type          = "ip"
+  protocol             = "TCP"
+  vpc_id               = var.vpc_id
+  deregistration_delay = "5"
   stickiness {
     enabled = false
     type    = "lb_cookie"
   }
 
   health_check {
-    healthy_threshold   = "5"
-    unhealthy_threshold = "5"
+    healthy_threshold   = "2"
+    unhealthy_threshold = "2"
     matcher             = "200-399"
     path                = "/_health"
     port                = "traffic-port"
     protocol            = "HTTP"
-    interval            = "30"
+    interval            = "10"
   }
 
   lifecycle {
@@ -234,11 +234,12 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
 }
 
 resource "aws_lb_target_group" "cased-shell-target-443" {
-  name_prefix = "t-cs4"
-  port        = 443
-  target_type = "ip"
-  protocol    = "TCP"
-  vpc_id      = var.vpc_id
+  name_prefix          = "t-cs4"
+  port                 = 443
+  target_type          = "ip"
+  protocol             = "TCP"
+  vpc_id               = var.vpc_id
+  deregistration_delay = "5"
 
   stickiness {
     enabled = false
@@ -246,13 +247,13 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   }
 
   health_check {
-    healthy_threshold   = "5"
-    unhealthy_threshold = "5"
+    healthy_threshold   = "2"
+    unhealthy_threshold = "2"
     matcher             = "200-399"
     path                = "/_health"
     port                = "traffic-port"
     protocol            = "HTTPS"
-    interval            = "30"
+    interval            = "10"
   }
 
   lifecycle {
