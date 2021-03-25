@@ -207,12 +207,12 @@ resource "aws_lb_listener" "cased-shell-listener-443" {
 }
 
 resource "aws_lb_target_group" "cased-shell-target-80" {
-  name_prefix = "t-cs8"
-  port        = 80
-  target_type = "ip"
-  protocol    = "TCP"
-  vpc_id      = var.vpc_id
-
+  name_prefix          = "t-cs8"
+  port                 = 80
+  target_type          = "ip"
+  protocol             = "TCP"
+  vpc_id               = var.vpc_id
+  deregistration_delay = "5"
   stickiness {
     enabled = false
     type    = "lb_cookie"
@@ -234,11 +234,12 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
 }
 
 resource "aws_lb_target_group" "cased-shell-target-443" {
-  name_prefix = "t-cs4"
-  port        = 443
-  target_type = "ip"
-  protocol    = "TCP"
-  vpc_id      = var.vpc_id
+  name_prefix          = "t-cs4"
+  port                 = 443
+  target_type          = "ip"
+  protocol             = "TCP"
+  vpc_id               = var.vpc_id
+  deregistration_delay = "5"
 
   stickiness {
     enabled = false
