@@ -225,7 +225,7 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
     path                = "/_health"
     port                = "traffic-port"
     protocol            = "HTTP"
-    interval            = "30"
+    interval            = "10"
   }
 
   lifecycle {
@@ -252,7 +252,7 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
     path                = "/_health"
     port                = "traffic-port"
     protocol            = "HTTPS"
-    interval            = "30"
+    interval            = "10"
   }
 
   lifecycle {
