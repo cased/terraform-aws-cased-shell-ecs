@@ -219,8 +219,8 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
   }
 
   health_check {
-    healthy_threshold   = "5"
-    unhealthy_threshold = "5"
+    healthy_threshold   = "2"
+    unhealthy_threshold = "2"
     matcher             = "200-399"
     path                = "/_health"
     port                = "traffic-port"
@@ -246,8 +246,8 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   }
 
   health_check {
-    healthy_threshold   = "5"
-    unhealthy_threshold = "5"
+    healthy_threshold   = "2"
+    unhealthy_threshold = "2"
     matcher             = "200-399"
     path                = "/_health"
     port                = "traffic-port"
