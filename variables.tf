@@ -78,3 +78,9 @@ variable "cpu" {
   default     = 180
   description = "The CPU allocated to the container"
 }
+
+variable "image" {
+  type        = string
+  default     = "casedhub/shell:latest"
+  description = "The container image to use"
+}

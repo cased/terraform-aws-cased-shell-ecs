@@ -60,7 +60,7 @@ module "cased-shell-container-definition" {
   version = "0.21.0"
 
   container_name               = local.base_name
-  container_image              = "casedhub/shell:latest"
+  container_image              = var.image
   container_memory             = var.memory
   container_memory_reservation = floor(var.memory / 3)
   container_cpu                = var.cpu
