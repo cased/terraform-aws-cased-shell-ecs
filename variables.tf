@@ -64,7 +64,7 @@ variable "zone_id" {
 variable "grace_period" {
   type        = number
   description = "Startup grace period, or the duration of time the application is expected to fail health checks on startup"
-  default     = 30
+  default     = 90
 }
 
 variable "memory" {
