@@ -92,6 +92,10 @@ locals {
       name  = "CASED_SHELL_HOSTNAME"
       value = var.hostname
     },
+    {
+      name      = "CADDY_SHELL_LOG_LEVEL"
+      value     = var.log_level
+    }
   ]
 
   username = {
