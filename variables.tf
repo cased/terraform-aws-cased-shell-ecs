@@ -84,3 +84,9 @@ variable "image" {
   default     = "casedhub/shell:latest"
   description = "The container image to use"
 }
+
+variable "log_level" {
+  type        = string
+  default     = "error"
+  description = "Log level"
+}
