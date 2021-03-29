@@ -93,8 +93,8 @@ locals {
       value = var.hostname
     },
     {
-      name      = "CADDY_SHELL_LOG_LEVEL"
-      value     = var.log_level
+      name  = "CASED_SHELL_LOG_LEVEL"
+      value = var.log_level
     }
   ]
 
