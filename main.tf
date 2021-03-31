@@ -227,13 +227,14 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
   }
 
   health_check {
-    healthy_threshold   = "2"
-    unhealthy_threshold = "2"
-    matcher             = "200-399"
-    path                = "/_health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    interval            = "30"
+    enabled             = var.health_check_enabled && var.http_health_check_enabled
+    healthy_threshold   = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_healthy_threshold, var.health_check_healthy_threshold), null) : null
+    unhealthy_threshold = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_unhealthy_threshold, var.health_check_unhealthy_threshold), null) : null
+    matcher             = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_matcher, var.health_check_matcher), null) : null
+    path                = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_path, var.health_check_path), null) : null
+    port                = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_port, var.health_check_port), null) : null
+    protocol            = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_protocol, var.health_check_protocol), null) : null
+    interval            = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_interval, var.health_check_interval), null) : null
   }
 
   lifecycle {
@@ -255,13 +256,14 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   }
 
   health_check {
-    healthy_threshold   = "2"
-    unhealthy_threshold = "2"
-    matcher             = "200-399"
-    path                = "/_health"
-    port                = "traffic-port"
-    protocol            = "HTTPS"
-    interval            = "30"
+    enabled             = var.health_check_enabled && var.https_health_check_enabled
+    healthy_threshold   = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_healthy_threshold, var.health_check_healthy_threshold), null) : null
+    unhealthy_threshold = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_unhealthy_threshold, var.health_check_unhealthy_threshold), null) : null
+    matcher             = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_matcher, var.health_check_matcher), null) : null
+    path                = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_path, var.health_check_path), null) : null
+    port                = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_port, var.health_check_port), null) : null
+    protocol            = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_protocol, var.health_check_protocol), null) : null
+    interval            = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_interval, var.health_check_interval), null) : null
   }
 
   lifecycle {
