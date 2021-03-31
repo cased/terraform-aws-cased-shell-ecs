@@ -90,3 +90,116 @@ variable "log_level" {
   default     = "error"
   description = "Log level"
 }
+
+variable "health_check_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "http_health_check_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "https_health_check_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "health_check_healthy_threshold" {
+  type    = string
+  default = "2"
+}
+
+variable "http_health_check_healthy_threshold" {
+  type    = string
+  default = ""
+}
+
+variable "https_health_check_healthy_threshold" {
+  type    = string
+  default = ""
+}
+variable "health_check_unhealthy_threshold" {
+  type    = string
+  default = "2"
+}
+
+variable "http_health_check_unhealthy_threshold" {
+  type    = string
+  default = ""
+}
+
+variable "https_health_check_unhealthy_threshold" {
+  type    = string
+  default = ""
+}
+variable "health_check_matcher" {
+  type    = string
+  default = ""
+}
+
+variable "http_health_check_matcher" {
+  type    = string
+  default = "200-399"
+}
+
+variable "https_health_check_matcher" {
+  type    = string
+  default = "200-399"
+}
+variable "health_check_path" {
+  type    = string
+  default = "/_health"
+}
+
+variable "http_health_check_path" {
+  type    = string
+  default = ""
+}
+
+variable "https_health_check_path" {
+  type    = string
+  default = ""
+}
+variable "health_check_port" {
+  type    = string
+  default = "traffic-port"
+}
+
+variable "http_health_check_port" {
+  type    = string
+  default = ""
+}
+
+variable "https_health_check_port" {
+  type    = string
+  default = ""
+}
+variable "health_check_protocol" {
+  type    = string
+  default = "TCP"
+}
+
+variable "http_health_check_protocol" {
+  type    = string
+  default = "HTTP"
+}
+
+variable "https_health_check_protocol" {
+  type    = string
+  default = "HTTPS"
+}
+variable "health_check_interval" {
+  type    = string
+  default = "10"
+}
+variable "http_health_check_interval" {
+  type    = string
+  default = ""
+}
+
+variable "https_health_check_interval" {
+  type    = string
+  default = ""
+}
