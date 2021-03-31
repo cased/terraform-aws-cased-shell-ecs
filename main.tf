@@ -233,7 +233,7 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
     path                = "/_health"
     port                = "traffic-port"
     protocol            = "HTTP"
-    interval            = "10"
+    interval            = "30"
   }
 
   lifecycle {
@@ -247,7 +247,7 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   target_type          = "ip"
   protocol             = "TCP"
   vpc_id               = var.vpc_id
-  deregistration_delay = "5"
+  deregistration_delay = "10"
 
   stickiness {
     enabled = false
@@ -261,7 +261,7 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
     path                = "/_health"
     port                = "traffic-port"
     protocol            = "HTTPS"
-    interval            = "10"
+    interval            = "30"
   }
 
   lifecycle {
