@@ -230,7 +230,6 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
     enabled             = var.health_check_enabled && var.http_health_check_enabled
     healthy_threshold   = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_healthy_threshold, var.health_check_healthy_threshold), null) : null
     unhealthy_threshold = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_unhealthy_threshold, var.health_check_unhealthy_threshold), null) : null
-    path                = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_path, var.health_check_path), null) : null
     port                = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_port, var.health_check_port), null) : null
     protocol            = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_protocol, var.health_check_protocol), null) : null
     interval            = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_interval, var.health_check_interval), null) : null
@@ -258,7 +257,6 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
     enabled             = var.health_check_enabled && var.https_health_check_enabled
     healthy_threshold   = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_healthy_threshold, var.health_check_healthy_threshold), null) : null
     unhealthy_threshold = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_unhealthy_threshold, var.health_check_unhealthy_threshold), null) : null
-    path                = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_path, var.health_check_path), null) : null
     port                = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_port, var.health_check_port), null) : null
     protocol            = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_protocol, var.health_check_protocol), null) : null
     interval            = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_interval, var.health_check_interval), null) : null
