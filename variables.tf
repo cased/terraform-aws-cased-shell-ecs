@@ -134,20 +134,6 @@ variable "https_health_check_unhealthy_threshold" {
   type    = string
   default = ""
 }
-variable "health_check_matcher" {
-  type    = string
-  default = ""
-}
-
-variable "http_health_check_matcher" {
-  type    = string
-  default = "200-399"
-}
-
-variable "https_health_check_matcher" {
-  type    = string
-  default = "200-399"
-}
 variable "health_check_path" {
   type    = string
   default = "/_health"
