@@ -134,20 +134,6 @@ variable "https_health_check_unhealthy_threshold" {
   type    = string
   default = ""
 }
-variable "health_check_path" {
-  type    = string
-  default = "/_health"
-}
-
-variable "http_health_check_path" {
-  type    = string
-  default = ""
-}
-
-variable "https_health_check_path" {
-  type    = string
-  default = ""
-}
 variable "health_check_port" {
   type    = string
   default = "traffic-port"
