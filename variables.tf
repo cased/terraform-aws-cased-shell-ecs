@@ -109,7 +109,7 @@ variable "http_health_check" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 30
-    timeout             = 10
+    timeout             = 30
     matcher             = null
   }]
 }
@@ -133,7 +133,7 @@ variable "https_health_check" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 30
-    timeout             = 10
+    timeout             = 30
     matcher             = null
   }]
 }
