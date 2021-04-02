@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e -o pipefail
+TERRAFORMS="terraform /usr/local/opt/terraform@0.12/bin/terraform"
+cd test
+
+for version in $TERRAFORMS; do
+    if which $version 2> /dev/null; then
+        if $version init > .terraform/out 2> .terraform/err; then
+            :
+        elif grep required_version .terraform/err; then
+            echo "Skipping..."
+            continue
+        else
+            cat .terraform/err 1>&2
+            exit 1
+        fi
+        $version fmt -recursive -check
+        $version validate
+    fi
+done
