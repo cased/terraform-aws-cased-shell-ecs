@@ -91,87 +91,49 @@ variable "log_level" {
   description = "Log level"
 }
 
-variable "health_check_enabled" {
-  type    = bool
-  default = true
+variable "http_health_check" {
+  type = list(object({
+    healthy_threshold   = number
+    interval            = number
+    matcher             = string
+    path                = string
+    port                = number
+    protocol            = string
+    timeout             = number
+    unhealthy_threshold = number
+  }))
+  default = [{
+    protocol            = "HTTP"
+    port                = "80"
+    path                = "/_health"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    interval            = 30
+    timeout             = 10
+    matcher             = null
+  }]
 }
 
-variable "http_health_check_enabled" {
-  type    = bool
-  default = true
-}
+variable "https_health_check" {
+  type = list(object({
+    healthy_threshold   = number
+    interval            = number
+    matcher             = string
+    path                = string
+    port                = number
+    protocol            = string
+    timeout             = number
+    unhealthy_threshold = number
+  }))
 
-variable "https_health_check_enabled" {
-  type    = bool
-  default = true
-}
-
-variable "health_check_healthy_threshold" {
-  type    = string
-  default = "2"
-}
-
-variable "http_health_check_healthy_threshold" {
-  type    = string
-  default = ""
-}
-
-variable "https_health_check_healthy_threshold" {
-  type    = string
-  default = ""
-}
-variable "health_check_unhealthy_threshold" {
-  type    = string
-  default = "2"
-}
-
-variable "http_health_check_unhealthy_threshold" {
-  type    = string
-  default = ""
-}
-
-variable "https_health_check_unhealthy_threshold" {
-  type    = string
-  default = ""
-}
-variable "health_check_port" {
-  type    = string
-  default = "traffic-port"
-}
-
-variable "http_health_check_port" {
-  type    = string
-  default = ""
-}
-
-variable "https_health_check_port" {
-  type    = string
-  default = ""
-}
-variable "health_check_protocol" {
-  type    = string
-  default = "TCP"
-}
-
-variable "http_health_check_protocol" {
-  type    = string
-  default = "HTTP"
-}
-
-variable "https_health_check_protocol" {
-  type    = string
-  default = "HTTPS"
-}
-variable "health_check_interval" {
-  type    = string
-  default = "10"
-}
-variable "http_health_check_interval" {
-  type    = string
-  default = ""
-}
-
-variable "https_health_check_interval" {
-  type    = string
-  default = ""
+  default = [{
+    protocol            = "HTTP"
+    port                = "80"
+    path                = "/_health"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    interval            = 30
+    timeout             = 10
+    matcher             = null
+  }]
 }

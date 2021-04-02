@@ -226,13 +226,19 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
     type    = "lb_cookie"
   }
 
-  health_check {
-    enabled             = var.health_check_enabled && var.http_health_check_enabled
-    healthy_threshold   = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_healthy_threshold, var.health_check_healthy_threshold), null) : null
-    unhealthy_threshold = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_unhealthy_threshold, var.health_check_unhealthy_threshold), null) : null
-    port                = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_port, var.health_check_port), null) : null
-    protocol            = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_protocol, var.health_check_protocol), null) : null
-    interval            = var.health_check_enabled && var.http_health_check_enabled ? try(coalesce(var.http_health_check_interval, var.health_check_interval), null) : null
+  dynamic "health_check" {
+    for_each = var.http_health_check
+
+    content {
+      healthy_threshold   = health_check.value.healthy_threshold
+      interval            = health_check.value.interval
+      matcher             = health_check.value.matcher
+      path                = health_check.value.path
+      port                = health_check.value.port
+      protocol            = health_check.value.protocol
+      timeout             = health_check.value.timeout
+      unhealthy_threshold = health_check.value.unhealthy_threshold
+    }
   }
 
   lifecycle {
@@ -253,13 +259,19 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
     type    = "lb_cookie"
   }
 
-  health_check {
-    enabled             = var.health_check_enabled && var.https_health_check_enabled
-    healthy_threshold   = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_healthy_threshold, var.health_check_healthy_threshold), null) : null
-    unhealthy_threshold = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_unhealthy_threshold, var.health_check_unhealthy_threshold), null) : null
-    port                = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_port, var.health_check_port), null) : null
-    protocol            = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_protocol, var.health_check_protocol), null) : null
-    interval            = var.health_check_enabled && var.https_health_check_enabled ? try(coalesce(var.https_health_check_interval, var.health_check_interval), null) : null
+  dynamic "health_check" {
+    for_each = var.https_health_check
+
+    content {
+      healthy_threshold   = health_check.value.healthy_threshold
+      interval            = health_check.value.interval
+      matcher             = health_check.value.matcher
+      path                = health_check.value.path
+      port                = health_check.value.port
+      protocol            = health_check.value.protocol
+      timeout             = health_check.value.timeout
+      unhealthy_threshold = health_check.value.unhealthy_threshold
+    }
   }
 
   lifecycle {
