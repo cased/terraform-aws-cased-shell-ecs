@@ -93,6 +93,10 @@ locals {
       value = var.hostname
     },
     {
+      name  = "CASED_REMOTE_HOSTNAME",
+      value = var.cased_remote_hostname
+    },
+    {
       name  = "CASED_SHELL_LOG_LEVEL"
       value = var.log_level
     },
