@@ -218,7 +218,7 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
   name_prefix          = "t-cs8"
   port                 = 80
   target_type          = "ip"
-  protocol             = "TCP"
+  protocol             = "HTTP"
   vpc_id               = var.vpc_id
   deregistration_delay = "5"
   stickiness {
@@ -250,7 +250,7 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   name_prefix          = "t-cs4"
   port                 = 443
   target_type          = "ip"
-  protocol             = "TCP"
+  protocol             = "HTTPS"
   vpc_id               = var.vpc_id
   deregistration_delay = "10"
 
