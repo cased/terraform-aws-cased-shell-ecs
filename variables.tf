@@ -56,6 +56,12 @@ variable "hostname" {
   description = "The hostname of the Cased Shell deployment, without protocol (e.g., 'webshell.example.com')"
 }
 
+variable "cased_remote_hostname" {
+  type        = string
+  description = "The hostname of the Cased remote server, without protocol (e.g., 'cased.com')"
+  default     = "cased.com"
+}
+
 variable "zone_id" {
   type        = string
   description = "The Route53 apex zone id which will be associated with the hostname entry"
