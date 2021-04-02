@@ -236,7 +236,6 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
       path                = health_check.value.path
       port                = health_check.value.port
       protocol            = health_check.value.protocol
-      timeout             = health_check.value.timeout
       unhealthy_threshold = health_check.value.unhealthy_threshold
     }
   }
@@ -269,7 +268,6 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
       path                = health_check.value.path
       port                = health_check.value.port
       protocol            = health_check.value.protocol
-      timeout             = health_check.value.timeout
       unhealthy_threshold = health_check.value.unhealthy_threshold
     }
   }
