@@ -1,0 +1,21 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform:
+          - 0.12.30
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ matrix.terraform }}
+      - name: fmt
+        run: terraform fmt -check
+      - name: test
+        run: ./script/test
