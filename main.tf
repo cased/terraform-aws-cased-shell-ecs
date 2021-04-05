@@ -234,12 +234,11 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
     for_each = var.http_health_check
 
     content {
+      protocol            = "HTTP"
+      interval            = "10"
       healthy_threshold   = health_check.value.healthy_threshold
-      interval            = health_check.value.interval
-      matcher             = health_check.value.matcher
       path                = health_check.value.path
       port                = health_check.value.port
-      protocol            = health_check.value.protocol
       unhealthy_threshold = health_check.value.unhealthy_threshold
     }
   }
@@ -266,12 +265,11 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
     for_each = var.https_health_check
 
     content {
+      protocol            = "HTTP"
+      interval            = "10"
       healthy_threshold   = health_check.value.healthy_threshold
-      interval            = health_check.value.interval
-      matcher             = health_check.value.matcher
       path                = health_check.value.path
       port                = health_check.value.port
-      protocol            = health_check.value.protocol
       unhealthy_threshold = health_check.value.unhealthy_threshold
     }
   }
