@@ -100,46 +100,30 @@ variable "log_level" {
 variable "http_health_check" {
   type = list(object({
     healthy_threshold   = number
-    interval            = number
-    matcher             = string
     path                = string
     port                = number
-    protocol            = string
-    timeout             = number
     unhealthy_threshold = number
   }))
   default = [{
-    protocol            = "HTTP"
     port                = "80"
     path                = "/_health"
     healthy_threshold   = 2
     unhealthy_threshold = 2
-    interval            = 10
-    timeout             = 30
-    matcher             = null
   }]
 }
 
 variable "https_health_check" {
   type = list(object({
     healthy_threshold   = number
-    interval            = number
-    matcher             = string
     path                = string
     port                = number
-    protocol            = string
-    timeout             = number
     unhealthy_threshold = number
   }))
 
   default = [{
-    protocol            = "HTTP"
     port                = "80"
     path                = "/_health"
     healthy_threshold   = 2
     unhealthy_threshold = 2
-    interval            = 10
-    timeout             = 30
-    matcher             = null
   }]
 }
