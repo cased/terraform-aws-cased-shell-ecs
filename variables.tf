@@ -114,7 +114,7 @@ variable "http_health_check" {
     path                = "/_health"
     healthy_threshold   = 2
     unhealthy_threshold = 2
-    interval            = 5
+    interval            = 10
     timeout             = 30
     matcher             = null
   }]
@@ -138,7 +138,7 @@ variable "https_health_check" {
     path                = "/_health"
     healthy_threshold   = 2
     unhealthy_threshold = 2
-    interval            = 5
+    interval            = 10
     timeout             = 30
     matcher             = null
   }]
