@@ -1,0 +1,23 @@
+name: renovate
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+  schedule:
+    - cron:  '0 */4 * * *'
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: renovate
+        uses: renovatebot/github-action@v24.106.0
+        env:
+          LOG_LEVEL: debug
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_GIT_AUTHOR: "todo <todo@example.com>"
+        with:
+          token: TODO
+          configurationFile: ./.github/renovate.json

@@ -87,8 +87,9 @@ variable "cpu" {
 
 variable "image" {
   type        = string
-  default     = "casedhub/shell:0.5.0"
   description = "The container image to use"
+  # renovate: image=casedhub/shell
+  default = "casedhub/shell:0.5.0"
 }
 
 variable "log_level" {
