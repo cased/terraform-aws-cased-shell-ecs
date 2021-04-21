@@ -127,3 +127,31 @@ variable "https_health_check" {
     unhealthy_threshold = 2
   }]
 }
+
+variable "host_autodiscovery" {
+  type    = bool
+  default = false
+}
+
+variable "host_autodiscovery_refresh_interval" {
+  type    = number
+  default = 60
+}
+variable "host_autodiscovery_descriptive_tag" {
+  type    = string
+  default = "Name"
+}
+
+variable "host_autodiscovery_resources" {
+  type    = list(string)
+  default = ["arn:aws:ec2:*:*:instance/*"]
+}
+variable "host_autodiscovery_iam_policy_conditions" {
+  type = list(object({
+    test     = string
+    variable = string
+    values   = list(string)
+  }))
+
+  default = []
+}

@@ -44,14 +44,18 @@ resource "aws_ecs_service" "service" {
 resource "aws_ecs_task_definition" "definition" {
   family = "${var.env}-cased-shell-service-definition"
 
-  container_definitions = <<EOF
-    [
-     ${module.cased-shell-container-definition.json_map}
-    ]
-  EOF
+  container_definitions = var.host_autodiscovery ? "[${module.cased-shell-container-definition.json_map},${module.cased-shell-awscli-sidecar-definition.json_map}]" : "[${module.cased-shell-container-definition.json_map}]"
 
   network_mode       = "awsvpc"
   execution_role_arn = aws_iam_role.ecs-task-execution-role.arn
+
+  volume {
+    name = "scratch"
+    docker_volume_configuration {
+      scope  = "task"
+      driver = "local"
+    }
+  }
 }
 
 # The container definition used for Cased Shell
@@ -64,7 +68,7 @@ module "cased-shell-container-definition" {
   container_memory             = var.memory
   container_memory_reservation = floor(var.memory / 3)
   container_cpu                = var.cpu
-  environment                  = concat(local.environment, var.ssh_username == null ? [] : [local.username])
+  environment                  = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.host_autodiscovery ? [local.host_discovery_environment] : [])
 
   # Concat these as secrets if their valueFrom/value is set
   secrets = concat([local.shell_secret_string], var.ssh_key_arn == null ? [] : [local.private_key], var.ssh_passphrase_arn == null ? [] : [local.passphrase])
@@ -81,6 +85,8 @@ module "cased-shell-container-definition" {
       protocol      = "tcp"
     },
   ]
+
+  mount_points = var.host_autodiscovery ? [local.host_discovery_mount_point] : []
 }
 
 locals {
