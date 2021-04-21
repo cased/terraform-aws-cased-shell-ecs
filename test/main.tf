@@ -66,3 +66,29 @@ module "test-custom-health-check" {
     timeout             = 10
   }]
 }
+
+module "test-autodiscovery" {
+  source = "../" # for local dev
+
+  vpc_id                             = "1234"
+  env                                = "test"
+  cluster_id                         = "1234"
+  image                              = "casedhub/shell:unstable"
+  security_group_ids                 = []
+  container_subnet_ids               = []
+  nlb_subnet_ids                     = []
+  cased_shell_secret_arn             = ""
+  ssh_username                       = "user"
+  log_level                          = "debug"
+  hostname                           = "test-minimal.example.com"
+  zone_id                            = "1234"
+  host_autodiscovery                 = true
+  host_autodiscovery_descriptive_tag = "aws:autoscaling:groupName"
+  host_autodiscovery_iam_policy_conditions = [{
+    test     = "StringLike"
+    variable = "ec2:ResourceTag/environment"
+    values = [
+      "*test*"
+    ]
+  }]
+}
