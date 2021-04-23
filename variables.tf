@@ -142,10 +142,6 @@ variable "host_autodiscovery_descriptive_tag" {
   default = "Name"
 }
 
-variable "host_autodiscovery_resources" {
-  type    = list(string)
-  default = ["arn:aws:ec2:*:*:instance/*"]
-}
 variable "host_autodiscovery_iam_policy_conditions" {
   type = list(object({
     test     = string

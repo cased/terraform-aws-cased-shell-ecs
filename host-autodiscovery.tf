@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "describe-instances-policy" {
     actions = [
       "ec2:DescribeInstances"
     ]
-    resources = var.host_autodiscovery_resources
+    resources = ["*"]
 
     dynamic "condition" {
       for_each = var.host_autodiscovery_iam_policy_conditions
