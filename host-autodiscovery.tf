@@ -12,6 +12,7 @@ module "cased-shell-awscli-sidecar-definition" {
   container_memory             = 512
   container_memory_reservation = 64
   container_cpu                = 100
+  port_mappings                = []
   mount_points = [
     {
       sourceVolume  = "scratch"
