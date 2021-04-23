@@ -142,11 +142,10 @@ variable "host_autodiscovery_descriptive_tag" {
   default = "Name"
 }
 
-variable "host_autodiscovery_iam_policy_conditions" {
+variable "host_autodiscovery_tag_filters" {
   type = list(object({
-    test     = string
-    variable = string
-    values   = list(string)
+    name   = string
+    values = list(string)
   }))
 
   default = []

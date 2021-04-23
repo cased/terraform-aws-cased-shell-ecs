@@ -84,9 +84,8 @@ module "test-autodiscovery" {
   zone_id                            = "1234"
   host_autodiscovery                 = true
   host_autodiscovery_descriptive_tag = "aws:autoscaling:groupName"
-  host_autodiscovery_iam_policy_conditions = [{
-    test     = "StringLike"
-    variable = "ec2:ResourceTag/environment"
+  host_autodiscovery_tag_filters = [{
+    name = "environment"
     values = [
       "*test*"
     ]

@@ -6,8 +6,8 @@ module "cased-shell-awscli-sidecar-definition" {
   version = "0.21.0"
 
   entrypoint                   = ["/bin/bash", "-c"]
-  command                      = ["aws sts get-caller-identity --output text && while true; do aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PrivateDnsName,Tags[?Key==`${var.host_autodiscovery_descriptive_tag}`] | [0].Value]' --output text | tr '\\t ',' > /opt/cased/tmp/hosts; sleep ${var.host_autodiscovery_refresh_interval}; done"]
-  container_name               = "host-autodiscovery"
+  command                      = ["aws sts get-caller-identity --output text && while true; do aws ec2 describe-instances ${local.host_autodiscovery_tag_filter_command} --query 'Reservations[*].Instances[*].[PrivateDnsName,Tags[?Key==`${var.host_autodiscovery_descriptive_tag}`] | [0].Value]' --output text | tr '\\t' ',' > /opt/cased/tmp/hosts; sleep ${var.host_autodiscovery_refresh_interval}; done"]
+  container_name               = "${local.base_name}-host-autodiscovery"
   container_image              = "amazon/aws-cli"
   container_memory             = 512
   container_memory_reservation = 64
@@ -25,21 +25,8 @@ module "cased-shell-awscli-sidecar-definition" {
 data "aws_iam_policy_document" "describe-instances-policy" {
   count = var.host_autodiscovery ? 1 : 0
   statement {
-    actions = [
-      "ec2:DescribeInstances"
-    ]
+    actions   = ["ec2:DescribeInstances"]
     resources = ["*"]
-
-    dynamic "condition" {
-      for_each = var.host_autodiscovery_iam_policy_conditions
-
-      content {
-        test     = condition.value.test
-        variable = condition.value.variable
-        values   = condition.value.values
-      }
-    }
-
   }
 }
 
@@ -67,4 +54,10 @@ locals {
     sourceVolume  = "scratch"
     containerPath = "/opt/cased/tmp"
   }
+
+  host_autodiscovery_tag_filter_command = join(" ", flatten([
+    for f in var.host_autodiscovery_tag_filters: [
+      format("--filters 'Name=tag:%s,Values=%s'", f.name, join(",", f.values))
+    ]
+  ]))
 }
