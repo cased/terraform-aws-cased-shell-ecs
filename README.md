@@ -4,9 +4,7 @@ terraform-aws-cased-shell-ecs
 Module to setup Cased Shell on ECS, featuring end-to-end encryption,
 and using a Network Load Balancer.
 
-See our [Terraform Registry docs](https://registry.terraform.io/modules/cased/cased-shell-ecs/aws/latest) for the input information and more.
-
-Basic usage
+Example
 ------------------
 
 ```terraform
@@ -34,9 +32,13 @@ module "cased-shell" {
 }
 ```
 
-Custom variables
+Documentation
 ------------------
 
-* `memory`. default is 1024MB
-* `cpu`. default is 180
+- [Usage documentation](./USAGE.md)
+- [Terraform Registry](https://registry.terraform.io/modules/cased/cased-shell-ecs/aws/latest)
 
+Development
+------------------
+
+`make` will generate docs, format source, and run tests.
