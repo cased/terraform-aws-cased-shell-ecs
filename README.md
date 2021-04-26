@@ -44,7 +44,9 @@ Custom variables
 Host Auto-discovery
 ------------------
 
-By default, the hosts a Cased Shell instance can be used to access are configured in the Cased App. Enabling host auto-discovery by setting `host_autodiscovery` to `true` allows a Cased Shell instance to query the AWS api and dynamically configure this set of hosts instead. The `host_autodiscovery_descriptive_tag` variable can be set to the name of a resource tag like `Name` or `aws:autoscaling:groupName` to include alongside the hostname, and the `host_autodiscovery_tag_filters` variable can be used to filter the set of instances displayed. By default, all instances in the same region as the Cased Shell instance are included.
+By default, the hosts a Cased Shell instance can be used to access are configured in the Cased App. Enabling host auto-discovery by setting `host_autodiscovery` to `true` grants the ECS task running Cased Shell access to the `ec2:DescribeInstances` API call in your account, allowing the Cased Shell instance to query the AWS API and dynamically update this set of hosts instead. The `host_autodiscovery_descriptive_tag` variable can be set to the name of a resource tag like `Name` or `aws:autoscaling:groupName` to include alongside the hostname, and the `host_autodiscovery_tag_filters` variable can be used to filter the set of instances displayed. By default, all instances in the same region as the Cased Shell instance are included.
+
+### Example
 
 ```terraform
 module "cased-shell" {
