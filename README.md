@@ -37,3 +37,8 @@ Documentation
 
 - [Usage documentation](./USAGE.md)
 - [Terraform Registry](https://registry.terraform.io/modules/cased/cased-shell-ecs/aws/latest)
+
+Development
+------------------
+
+`make` will generate docs, format source, and run tests.

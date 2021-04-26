@@ -18,4 +18,4 @@ jobs:
       - name: fmt
         run: terraform fmt -check
       - name: test
-        run: ./script/test
+        run: make test
