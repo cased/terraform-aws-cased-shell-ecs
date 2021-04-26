@@ -56,7 +56,7 @@ locals {
   }
 
   host_autodiscovery_tag_filter_command = join(" ", flatten([
-    for f in var.host_autodiscovery_tag_filters: [
+    for f in var.host_autodiscovery_tag_filters : [
       format("--filters 'Name=tag:%s,Values=%s'", f.name, join(",", f.values))
     ]
   ]))

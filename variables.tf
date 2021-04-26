@@ -130,19 +130,19 @@ variable "https_health_check" {
 
 variable "host_autodiscovery" {
   description = "Set to true to enable host auto-discovery and create the required IAM role allowing read-only access to ec2:DescribeInstances."
-  type    = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "host_autodiscovery_refresh_interval" {
   description = "Number of seconds between each host autodiscovery refresh."
-  type    = number
-  default = 60
+  type        = number
+  default     = 60
 }
 variable "host_autodiscovery_descriptive_tag" {
   description = "The name of the tag whose value will be displayed alongside each host. 'Name' is used by default to match the behavior of the AWS console."
-  type    = string
-  default = "Name"
+  type        = string
+  default     = "Name"
 }
 
 variable "host_autodiscovery_tag_filters" {
