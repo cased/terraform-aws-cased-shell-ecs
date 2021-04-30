@@ -87,7 +87,7 @@ variable "cpu" {
 
 variable "image" {
   type        = string
-  default     = "casedhub/shell:0.5.0"
+  default     = "casedhub/shell:0.6.0"
   description = "The container image to use"
 }
 
@@ -126,4 +126,31 @@ variable "https_health_check" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }]
+}
+
+variable "host_autodiscovery" {
+  description = "Set to true to enable host auto-discovery and create the required IAM role allowing read-only access to ec2:DescribeInstances."
+  type        = bool
+  default     = false
+}
+
+variable "host_autodiscovery_refresh_interval" {
+  description = "Number of seconds between each host autodiscovery refresh."
+  type        = number
+  default     = 60
+}
+variable "host_autodiscovery_descriptive_tag" {
+  description = "The name of the tag whose value will be displayed alongside each host. 'Name' is used by default to match the behavior of the AWS console."
+  type        = string
+  default     = "Name"
+}
+
+variable "host_autodiscovery_tag_filters" {
+  description = "Provide a list of tag names and values to limit the list of hosts displayed. Single- ('?') and multiple-character ('*') wildcards are supported in tag values. By default, all instances in the same region are included."
+  type = list(object({
+    name   = string
+    values = list(string)
+  }))
+
+  default = []
 }
