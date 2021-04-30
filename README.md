@@ -10,7 +10,7 @@ Example
 ```terraform
 module "cased-shell" {
     source  = "cased/terraform-aws-cased-shell-ecs"
-    version = "~> 0.2.0"
+    version = "~> 0.3.0"
 
     # The environment, and the id of the vpc and the cluster where the service will run
     env         = "prod"
