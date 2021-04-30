@@ -14,6 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_cased-shell-awscli-sidecar-definition"></a> [cased-shell-awscli-sidecar-definition](#module\_cased-shell-awscli-sidecar-definition) | cloudposse/ecs-container-definition/aws | 0.21.0 |
 | <a name="module_cased-shell-container-definition"></a> [cased-shell-container-definition](#module\_cased-shell-container-definition) | cloudposse/ecs-container-definition/aws | 0.21.0 |
 
 ## Resources
@@ -23,6 +24,8 @@
 | [aws_ecs_service.service](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
 | [aws_ecs_task_definition.definition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
 | [aws_iam_role.ecs-task-execution-role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.ecs-task-role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.describe-instances-role-policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.read-secrets-policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.ecs-task-execution-role-attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_lb.cased-shell-nlb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
@@ -31,6 +34,7 @@
 | [aws_lb_target_group.cased-shell-target-443](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group.cased-shell-target-80](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_route53_record.cased-shell](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_iam_policy_document.describe-instances-policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ecs-tasks-policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.read-secrets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
@@ -50,9 +54,13 @@
 | <a name="input_cased_remote_hostname"></a> [cased\_remote\_hostname](#input\_cased\_remote\_hostname) | The hostname of the Cased remote server, without protocol (e.g., 'cased.com') | `string` | `"cased.com"` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | The CPU allocated to the container | `number` | `180` | no |
 | <a name="input_grace_period"></a> [grace\_period](#input\_grace\_period) | Startup grace period, or the duration of time the application is expected to fail health checks on startup | `number` | `360` | no |
+| <a name="input_host_autodiscovery"></a> [host\_autodiscovery](#input\_host\_autodiscovery) | Set to true to enable host auto-discovery and create the required IAM role allowing read-only access to ec2:DescribeInstances. | `bool` | `false` | no |
+| <a name="input_host_autodiscovery_descriptive_tag"></a> [host\_autodiscovery\_descriptive\_tag](#input\_host\_autodiscovery\_descriptive\_tag) | The name of the tag whose value will be displayed alongside each host. 'Name' is used by default to match the behavior of the AWS console. | `string` | `"Name"` | no |
+| <a name="input_host_autodiscovery_refresh_interval"></a> [host\_autodiscovery\_refresh\_interval](#input\_host\_autodiscovery\_refresh\_interval) | Number of seconds between each host autodiscovery refresh. | `number` | `60` | no |
+| <a name="input_host_autodiscovery_tag_filters"></a> [host\_autodiscovery\_tag\_filters](#input\_host\_autodiscovery\_tag\_filters) | Provide a list of tag names and values to limit the list of hosts displayed. Single- ('?') and multiple-character ('*') wildcards are supported in tag values. By default, all instances in the same region are included. | <pre>list(object({<br>    name   = string<br>    values = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_http_health_check"></a> [http\_health\_check](#input\_http\_health\_check) | n/a | <pre>list(object({<br>    healthy_threshold   = number<br>    path                = string<br>    port                = number<br>    unhealthy_threshold = number<br>  }))</pre> | <pre>[<br>  {<br>    "healthy_threshold": 2,<br>    "path": "/_health",<br>    "port": "80",<br>    "unhealthy_threshold": 2<br>  }<br>]</pre> | no |
 | <a name="input_https_health_check"></a> [https\_health\_check](#input\_https\_health\_check) | n/a | <pre>list(object({<br>    healthy_threshold   = number<br>    path                = string<br>    port                = number<br>    unhealthy_threshold = number<br>  }))</pre> | <pre>[<br>  {<br>    "healthy_threshold": 2,<br>    "path": "/_health",<br>    "port": "80",<br>    "unhealthy_threshold": 2<br>  }<br>]</pre> | no |
-| <a name="input_image"></a> [image](#input\_image) | The container image to use | `string` | `"casedhub/shell:0.5.0"` | no |
+| <a name="input_image"></a> [image](#input\_image) | The container image to use | `string` | `"casedhub/shell:0.6.0"` | no |
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | Log level | `string` | `"error"` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | The memory in MB allocated to the container | `number` | `1024` | no |
 | <a name="input_ssh_key_arn"></a> [ssh\_key\_arn](#input\_ssh\_key\_arn) | The ARN of a secret used for the CASED\_SHELL\_SSH\_PRIVATE\_KEY env variable | `string` | `null` | no |
