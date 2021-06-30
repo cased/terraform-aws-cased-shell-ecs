@@ -1,14 +1,14 @@
 
 terraform {
   required_providers {
-    aws = "~> 2.54"
+    aws = "~> 3.35"
   }
   required_version = ">= 0.12"
 }
 
 provider "aws" {
   region  = "us-east-1"
-  version = "~> 2.54"
+  version = "~> 3.35"
 }
 
 module "test-minimal" {
