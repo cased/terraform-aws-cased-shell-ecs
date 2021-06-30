@@ -232,6 +232,8 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
   protocol             = "TCP"
   vpc_id               = var.vpc_id
   deregistration_delay = "5"
+  preserve_client_ip   = true
+
   stickiness {
     enabled = false
     type    = "lb_cookie"
@@ -262,6 +264,7 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   protocol             = "TCP"
   vpc_id               = var.vpc_id
   deregistration_delay = "10"
+  preserve_client_ip   = true
 
   stickiness {
     enabled = false
