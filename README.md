@@ -1,28 +1,26 @@
-terraform-aws-cased-shell-ecs
-------------------------------
+# terraform-aws-cased-shell-ecs
 
 Module to setup Cased Shell on ECS, featuring end-to-end encryption,
 and using a Network Load Balancer.
 
-Example
-------------------
+## Example
 
 ```terraform
 module "cased-shell" {
     source  = "cased/terraform-aws-cased-shell-ecs"
-    version = "~> 0.3.0"
+    version = "~> 0.4.0"
 
     # The environment, and the id of the vpc and the cluster where the service will run
     env         = "prod"
     vpc_id      = vpc.id
-    cluster_id  = mycluster.id
+    cluster_id  = cluster.id
 
-    # Subnets and secgroups for the service
+    # Subnets and security groups for the service
     vpc_subnet_ids     = [subnet1.id, subnet2.id]
     security_group_ids = [securitygroup1.id, securitygroup2.id]
 
     # The hostname for Cased Shell
-    hostname = "webshell.example.com"
+    hostname = "shell.example.com"
 
     # For security, this must be the ARN of an aws_secretsmanager_secret, not the actual secret string
     cased_shell_secret_arn = your_shell_secret.arn
@@ -32,57 +30,65 @@ module "cased-shell" {
 }
 ```
 
-Documentation
-------------------
+## Documentation
 
 - [Usage documentation](./USAGE.md)
 - [Terraform Registry](https://registry.terraform.io/modules/cased/cased-shell-ecs/aws/latest)
 
-Host Auto-discovery
-------------------
+## Host and Container auto-discovery
 
-By default, the hosts a Cased Shell instance can be used to access are configured in the Cased App. Enabling host auto-discovery by setting `host_autodiscovery` to `true` grants the ECS task running Cased Shell access to the `ec2:DescribeInstances` API call in your account, allowing the Cased Shell instance to query the AWS API and dynamically update this set of hosts instead. The `host_autodiscovery_descriptive_tag` variable can be set to the name of a resource tag like `Name` or `aws:autoscaling:groupName` to include alongside the hostname, and the `host_autodiscovery_tag_filters` variable can be used to filter the set of instances displayed. By default, all instances in the same region as the Cased Shell instance are included.
+By default, the hosts a Cased Shell instance can be used to access are configured in the Cased App. To configure Cased Shell to automatically discovery nearby instances and containers, this module accepts a `jump_queries` parameter containing a list of Jump Queries as described in the [documentation for the Jump utility](https://github.com/cased/jump/pkgs/container/jump).
 
-### Example
+By default, a newest and oldest EC2 instances discovered in the same region as Cased Shell are displayed. To instead list all EC2 instances in your test cluster, pass a list of [queries](https://github.com/cased/jump/pkgs/container/jump#writing-queries) to `jump_queries`.
+
+### Examples
 
 ```terraform
-module "cased-shell" {
-    source  = "cased/terraform-aws-cased-shell-ecs"
-    version = "~> 0.3.0"
-
-    # The environment, and the id of the vpc and the cluster where the service will run
-    env         = "prod"
-    vpc_id      = vpc.id
-    cluster_id  = mycluster.id
-
-    # Subnets and secgroups for the service
-    vpc_subnet_ids     = [subnet1.id, subnet2.id]
-    security_group_ids = [securitygroup1.id, securitygroup2.id]
-
-    # The hostname for Cased Shell
-    hostname = "webshell.example.com"
-
-    # For security, this must be the ARN of an aws_secretsmanager_secret, not the actual secret string
-    cased_shell_secret_arn = your_shell_secret.arn
-
-    # Set up a hostname with route53 automatically
-    zone_id = your_zone.id
-
-    # Automatically display all instances with a `cluster` tag that matches `*test*` in host dropdown list,
-    # including the value of `aws:autoscaling:groupName` to help users find the right instance.
-    host_autodiscovery                 = true
-    host_autodiscovery_descriptive_tag = "aws:autoscaling:groupName"
-    host_autodiscovery_tag_filters = [{
-      name = "cluster"
-      values = [
-        "*test*"
-      ]
-    }]
-
-}
+    jump_queries = [
+      {
+        provider = "ec2"
+        filters = {
+            "tag:aws:autoscaling:groupName" = "*test*"
+        }
+        prompt = {
+          description = "Test cluster instances"
+          labels = {
+            environment = "test"
+          }
+        }
+      },
+      {
+        provider = "ecs"
+        filters = {
+          cluster = "test-cluster"
+          task-group = "test-service"
+        }
+        limit = 1
+        sortBy = "startedAt"
+        sortOrder = "desc"
+        prompt = {
+          name = "Test Rails Console"
+          description = "Use to perform exploratory debugging on the test cluster"
+          shellCommand = "./bin/rails console"
+          labels = {
+            environment = "test"
+          }
+        }
+      },
+      {
+        provider = "static"
+        prompt = {
+          description = "Static entries can be added using the static provider"
+          hostname = "example.com"
+          ipAddress = "192.0.2.1"
+          port = "2222"
+          username = "example"
+          promptForKey = true
+        }
+      }
+    ]
 ```
 
-Development
-------------------
+## Development
 
 `make` will generate docs, format source, and run tests.

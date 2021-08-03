@@ -47,11 +47,11 @@ resource "aws_ecs_service" "service" {
 resource "aws_ecs_task_definition" "definition" {
   family = "${var.env}-cased-shell-service-definition"
 
-  container_definitions = var.host_autodiscovery ? "[${module.cased-shell-container-definition.json_map},${module.cased-shell-awscli-sidecar-definition.json_map}]" : "[${module.cased-shell-container-definition.json_map}]"
+  container_definitions = var.jump_queries != [] ? "[${module.cased-shell-container-definition.json_map},${module.cased-shell-jump-sidecar-definition.json_map}]" : "[${module.cased-shell-container-definition.json_map}]"
 
   network_mode       = "awsvpc"
   execution_role_arn = aws_iam_role.ecs-task-execution-role.arn
-  task_role_arn      = var.host_autodiscovery ? aws_iam_role.ecs-task-role.0.arn : null
+  task_role_arn      = var.jump_queries != [] ? aws_iam_role.ecs-task-role.0.arn : null
 
   volume {
     name = "scratch"
@@ -65,14 +65,26 @@ resource "aws_ecs_task_definition" "definition" {
 # The container definition used for Cased Shell
 module "cased-shell-container-definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.21.0"
+  version = "0.22.0"
 
   container_name               = local.base_name
   container_image              = var.image
   container_memory             = var.memory
   container_memory_reservation = floor(var.memory / 3)
   container_cpu                = var.cpu
-  environment                  = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.host_autodiscovery ? [local.host_discovery_environment] : [])
+  environment                  = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [])
+
+  container_depends_on = var.jump_queries != [] ? [
+    {
+      containerName = "${local.base_name}-jump-config",
+      condition     = "COMPLETE"
+    },
+    {
+      containerName = "${local.base_name}-jump",
+      condition     = "RUNNING"
+    }
+  ] : []
+
 
   # Concat these as secrets if their valueFrom/value is set
   secrets = concat([local.shell_secret_string], var.ssh_key_arn == null ? [] : [local.private_key], var.ssh_passphrase_arn == null ? [] : [local.passphrase])
@@ -90,7 +102,7 @@ module "cased-shell-container-definition" {
     },
   ]
 
-  mount_points = var.host_autodiscovery ? [local.host_discovery_mount_point] : []
+  mount_points = var.jump_queries != [] ? [local.jump_mount_point] : []
 }
 
 locals {
