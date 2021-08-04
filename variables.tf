@@ -156,6 +156,12 @@ variable "jump_queries" {
   ]
 }
 
+variable "jump_image" {
+  description = "The image to use for the jump container"
+  type        = string
+  default     = "ghcr.io/cased/jump:main"
+}
+
 variable "custom_environment" {
   description = "Additional environment variables to pass to the shell container."
   type = list(object({

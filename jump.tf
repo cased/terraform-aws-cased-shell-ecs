@@ -6,7 +6,8 @@ module "cased-shell-jump-sidecar-definition" {
 
   entrypoint                   = ["/bin/bash", "-c"]
   container_name               = "${local.base_name}-jump"
-  container_image              = "amazon/aws-cli"
+  command                      = ["jump /opt/cased/tmp/jump.yaml /opt/cased/tmp/jump.json"]
+  container_image              = var.jump_image
   container_memory             = 512
   container_memory_reservation = 64
   container_cpu                = 100
