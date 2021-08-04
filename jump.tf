@@ -82,7 +82,7 @@ resource "aws_iam_role_policy" "describe-instances-role-policy" {
 locals {
   jump_environment = [{
     name  = "CASED_SHELL_HOST_FILE"
-    value = "/opt/cased/tmp/hosts"
+    value = "/opt/cased/tmp/jump.json"
   }]
 
   jump_mount_point = {
