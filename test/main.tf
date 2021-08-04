@@ -152,3 +152,27 @@ module "test-jump-examples" {
   ]
 
 }
+
+
+module "test-custom-environment" {
+  source = "../" # for local dev
+
+  vpc_id                 = "1234"
+  env                    = "test"
+  cluster_id             = "1234"
+  image                  = "casedhub/shell:unstable"
+  security_group_ids     = []
+  container_subnet_ids   = []
+  nlb_subnet_ids         = []
+  cased_shell_secret_arn = ""
+  ssh_username           = "user"
+  log_level              = "debug"
+  hostname               = "test-minimal.example.com"
+  zone_id                = "1234"
+  custom_environment = [
+    {
+      name  = "AWS_ACCESS_KEY_ID"
+      value = "test"
+    }
+  ]
+}

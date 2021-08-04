@@ -155,6 +155,16 @@ variable "jump_queries" {
 
   ]
 }
+
+variable "custom_environment" {
+  description = "Additional environment variables to pass to the shell container."
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+
 variable "host_autodiscovery" {
   description = "deprecated"
   type        = bool

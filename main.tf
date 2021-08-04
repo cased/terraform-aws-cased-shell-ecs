@@ -72,7 +72,7 @@ module "cased-shell-container-definition" {
   container_memory             = var.memory
   container_memory_reservation = floor(var.memory / 3)
   container_cpu                = var.cpu
-  environment                  = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [])
+  environment                  = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [], var.custom_environment)
 
   container_depends_on = var.jump_queries != [] ? [
     {
