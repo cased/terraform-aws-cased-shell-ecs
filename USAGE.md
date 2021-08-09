@@ -16,7 +16,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cased-shell-container-definition"></a> [cased-shell-container-definition](#module\_cased-shell-container-definition) | cloudposse/ecs-container-definition/aws | 0.22.0 |
-| <a name="module_cased-shell-jump-config-container-definition"></a> [cased-shell-jump-config-container-definition](#module\_cased-shell-jump-config-container-definition) | cloudposse/ecs-container-definition/aws | 0.22.0 |
+| <a name="module_cased-shell-jump-config-definition"></a> [cased-shell-jump-config-definition](#module\_cased-shell-jump-config-definition) | cloudposse/ecs-container-definition/aws | 0.22.0 |
 | <a name="module_cased-shell-jump-sidecar-definition"></a> [cased-shell-jump-sidecar-definition](#module\_cased-shell-jump-sidecar-definition) | cloudposse/ecs-container-definition/aws | 0.22.0 |
 
 ## Resources

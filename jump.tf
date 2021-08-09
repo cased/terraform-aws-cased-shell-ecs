@@ -25,7 +25,7 @@ module "cased-shell-jump-sidecar-definition" {
   ]
 }
 
-module "cased-shell-jump-config-container-definition" {
+module "cased-shell-jump-config-definition" {
   # TODO once we drop support for 0.12
   # count   = var.jump_queries != [] ? 1 : 0
   source  = "cloudposse/ecs-container-definition/aws"

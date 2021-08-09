@@ -47,7 +47,7 @@ resource "aws_ecs_service" "service" {
 resource "aws_ecs_task_definition" "definition" {
   family = "${var.env}-cased-shell-service-definition"
 
-  container_definitions = var.jump_queries != [] ? "[${module.cased-shell-container-definition.json_map},${module.cased-shell-jump-sidecar-definition.json_map}]" : "[${module.cased-shell-container-definition.json_map}]"
+  container_definitions = var.jump_queries != [] ? "[${module.cased-shell-container-definition.json_map},${module.cased-shell-jump-config-definition.json_map},${module.cased-shell-jump-sidecar-definition.json_map}]" : "[${module.cased-shell-container-definition.json_map}]"
 
   network_mode       = "awsvpc"
   execution_role_arn = aws_iam_role.ecs-task-execution-role.arn
