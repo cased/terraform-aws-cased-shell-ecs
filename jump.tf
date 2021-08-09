@@ -39,6 +39,7 @@ module "cased-shell-jump-config-definition" {
   container_memory_reservation = 64
   container_cpu                = 100
   port_mappings                = []
+  essential                    = false
   environment = [{
     name = "YAML",
     // lol
