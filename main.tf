@@ -76,10 +76,6 @@ module "cased-shell-container-definition" {
 
   container_depends_on = var.jump_queries != [] ? [
     {
-      containerName = "${local.base_name}-jump-config",
-      condition     = "SUCCESS"
-    },
-    {
       containerName = "${local.base_name}-jump",
       condition     = "START"
     }

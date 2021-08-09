@@ -134,7 +134,7 @@ variable "jump_queries" {
   default = [
     {
       provider  = "ec2"
-      filters   = []
+      filters   = {}
       limit     = 1
       sortBy    = "launchTime"
       sortOrder = "desc"
@@ -144,7 +144,7 @@ variable "jump_queries" {
     },
     {
       provider  = "ec2"
-      filters   = []
+      filters   = {}
       limit     = 1
       sortBy    = "launchTime"
       sortOrder = "desc"

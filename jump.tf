@@ -7,14 +7,15 @@ module "cased-shell-jump-sidecar-definition" {
   entrypoint                   = ["/bin/app", "/opt/cased/tmp/jump.yaml", "/opt/cased/tmp/jump.json"]
   container_name               = "${local.base_name}-jump"
   container_image              = var.jump_image
-  container_memory             = 512
+  container_memory             = 128
   container_memory_reservation = 64
   container_cpu                = 100
   port_mappings                = []
   container_depends_on = [{
     containerName = "${local.base_name}-jump-config",
-    condition     = "COMPLETE"
+    condition     = "SUCCESS"
   }]
+  essential = false
 
   mount_points = [
     {
@@ -34,15 +35,17 @@ module "cased-shell-jump-config-definition" {
   container_name               = "${local.base_name}-jump-config"
   command                      = ["echo \"$YAML\" > /opt/cased/tmp/jump.yaml"]
   container_image              = "amazon/aws-cli"
-  container_memory             = 512
+  container_memory             = 64
   container_memory_reservation = 64
-  container_cpu                = 100
+  container_cpu                = 10
   port_mappings                = []
   essential                    = false
   environment = [{
     name = "YAML",
     // lol
-    value = jsonencode(var.jump_queries)
+    value = jsonencode({
+      queries : var.jump_queries
+    })
   }]
   mount_points = [
     {
