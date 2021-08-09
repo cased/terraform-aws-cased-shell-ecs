@@ -4,7 +4,7 @@ module "cased-shell-jump-sidecar-definition" {
   source  = "cloudposse/ecs-container-definition/aws"
   version = "0.22.0"
 
-  command                      = ["/opt/cased/tmp/jump.yaml", "/opt/cased/tmp/jump.json"]
+  entrypoint                   = ["/bin/app", "/opt/cased/tmp/jump.yaml", "/opt/cased/tmp/jump.json"]
   container_name               = "${local.base_name}-jump"
   container_image              = var.jump_image
   container_memory             = 512
