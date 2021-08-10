@@ -147,7 +147,7 @@ variable "jump_queries" {
       filters   = {}
       limit     = 1
       sortBy    = "launchTime"
-      sortOrder = "desc"
+      sortOrder = "asc"
       prompt = {
         description = "oldest EC2 instance"
       }
