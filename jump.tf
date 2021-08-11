@@ -11,11 +11,11 @@ module "cased-shell-jump-sidecar-definition" {
   container_memory_reservation = 64
   container_cpu                = 100
   port_mappings                = []
+  essential                    = true
   container_depends_on = [{
     containerName = "${local.base_name}-jump-config",
     condition     = "SUCCESS"
   }]
-  essential = false
 
   mount_points = [
     {
