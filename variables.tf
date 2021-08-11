@@ -134,23 +134,23 @@ variable "jump_queries" {
   default = [
     {
       provider  = "ec2"
-      featured  = true
       filters   = {}
       limit     = 1
       sortBy    = "launchTime"
       sortOrder = "desc"
       prompt = {
+        featured    = true
         description = "newest EC2 instance"
       }
     },
     {
       provider  = "ec2"
-      featured  = true
       filters   = {}
       limit     = 1
       sortBy    = "launchTime"
       sortOrder = "asc"
       prompt = {
+        featured    = true
         description = "oldest EC2 instance"
       }
     },
