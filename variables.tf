@@ -131,31 +131,7 @@ variable "https_health_check" {
 variable "jump_queries" {
   description = "A list of jump queries as described in https://github.com/cased/jump/pkgs/container/jump#writing-queries"
   type        = any
-  default = [
-    {
-      provider  = "ec2"
-      filters   = {}
-      limit     = 1
-      sortBy    = "launchTime"
-      sortOrder = "desc"
-      prompt = {
-        featured    = true
-        description = "newest EC2 instance"
-      }
-    },
-    {
-      provider  = "ec2"
-      filters   = {}
-      limit     = 1
-      sortBy    = "launchTime"
-      sortOrder = "asc"
-      prompt = {
-        featured    = true
-        description = "oldest EC2 instance"
-      }
-    },
-
-  ]
+  default = []
 }
 
 variable "jump_image" {

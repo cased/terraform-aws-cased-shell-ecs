@@ -39,8 +39,6 @@ module "cased-shell" {
 
 By default, the hosts a Cased Shell instance can be used to access are configured in the Cased App. To configure Cased Shell to automatically discovery nearby instances and containers, this module accepts a `jump_queries` parameter containing a list of Jump Queries as described in the [documentation for the Jump utility](https://github.com/cased/jump/pkgs/container/jump).
 
-By default, a newest and oldest EC2 instances discovered in the same region as Cased Shell are displayed. To instead list all EC2 instances in your test cluster, pass a list of [queries](https://github.com/cased/jump/pkgs/container/jump#writing-queries) to `jump_queries`.
-
 ### Examples
 
 ```terraform
