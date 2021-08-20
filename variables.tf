@@ -131,7 +131,7 @@ variable "https_health_check" {
 variable "jump_queries" {
   description = "A list of jump queries as described in https://github.com/cased/jump/pkgs/container/jump#writing-queries"
   type        = any
-  default = []
+  default     = []
 }
 
 variable "jump_image" {
