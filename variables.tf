@@ -128,25 +128,46 @@ variable "https_health_check" {
   }]
 }
 
+variable "jump_queries" {
+  description = "A list of jump queries as described in https://github.com/cased/jump/pkgs/container/jump#writing-queries"
+  type        = any
+  default     = []
+}
+
+variable "jump_image" {
+  description = "The image to use for the jump container"
+  type        = string
+  default     = "ghcr.io/cased/jump:main"
+}
+
+variable "custom_environment" {
+  description = "Additional environment variables to pass to the shell container."
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+
 variable "host_autodiscovery" {
-  description = "Set to true to enable host auto-discovery and create the required IAM role allowing read-only access to ec2:DescribeInstances."
+  description = "deprecated"
   type        = bool
   default     = false
 }
 
 variable "host_autodiscovery_refresh_interval" {
-  description = "Number of seconds between each host autodiscovery refresh."
+  description = "deprecated"
   type        = number
   default     = 60
 }
 variable "host_autodiscovery_descriptive_tag" {
-  description = "The name of the tag whose value will be displayed alongside each host. 'Name' is used by default to match the behavior of the AWS console."
+  description = "deprecated"
   type        = string
   default     = "Name"
 }
 
 variable "host_autodiscovery_tag_filters" {
-  description = "Provide a list of tag names and values to limit the list of hosts displayed. Single- ('?') and multiple-character ('*') wildcards are supported in tag values. By default, all instances in the same region are included."
+  description = "deprecated"
   type = list(object({
     name   = string
     values = list(string)

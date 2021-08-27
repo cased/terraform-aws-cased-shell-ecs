@@ -67,7 +67,7 @@ module "test-custom-health-check" {
   }]
 }
 
-module "test-autodiscovery" {
+module "test-deprecated-autodiscovery" {
   source = "../" # for local dev
 
   vpc_id                             = "1234"
@@ -90,4 +90,89 @@ module "test-autodiscovery" {
       "*test*"
     ]
   }]
+}
+
+module "test-jump-examples" {
+  source = "../" # for local dev
+
+  vpc_id                 = "1234"
+  env                    = "test"
+  cluster_id             = "1234"
+  image                  = "casedhub/shell:unstable"
+  security_group_ids     = []
+  container_subnet_ids   = []
+  nlb_subnet_ids         = []
+  cased_shell_secret_arn = ""
+  ssh_username           = "user"
+  log_level              = "debug"
+  hostname               = "test-minimal.example.com"
+  zone_id                = "1234"
+  jump_queries = [
+    {
+      provider = "ec2"
+      filters = {
+        "tag:aws:autoscaling:groupName" = "*test*"
+      }
+      prompt = {
+        description = "Test cluster instances"
+        labels = {
+          environment = "test"
+        }
+      }
+    },
+    {
+      provider = "ecs"
+      filters = {
+        cluster    = "test-cluster"
+        task-group = "test-service"
+      }
+      limit     = 1
+      sortBy    = "startedAt"
+      sortOrder = "desc"
+      prompt = {
+        name         = "Test Rails Console"
+        description  = "Use to perform exploratory debugging on the test cluster"
+        shellCommand = "./bin/rails console"
+        labels = {
+          environment = "test"
+        }
+      }
+    },
+    {
+      provider = "static"
+      prompt = {
+        description  = "Static entries can be added using the static provider"
+        hostname     = "example.com"
+        ipAddress    = "192.0.2.1"
+        port         = "2222"
+        username     = "example"
+        promptForKey = true
+      }
+    }
+  ]
+
+}
+
+
+module "test-custom-environment" {
+  source = "../" # for local dev
+
+  vpc_id                 = "1234"
+  env                    = "test"
+  cluster_id             = "1234"
+  image                  = "casedhub/shell:unstable"
+  security_group_ids     = []
+  container_subnet_ids   = []
+  nlb_subnet_ids         = []
+  cased_shell_secret_arn = ""
+  ssh_username           = "user"
+  log_level              = "debug"
+  hostname               = "test-minimal.example.com"
+  zone_id                = "1234"
+  custom_environment = [
+    {
+      name  = "AWS_ACCESS_KEY_ID"
+      value = "test"
+    }
+  ]
 }
