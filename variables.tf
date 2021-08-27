@@ -87,7 +87,7 @@ variable "cpu" {
 
 variable "image" {
   type        = string
-  default     = "casedhub/shell:0.7.1"
+  default     = "ghcr.io/cased/shell:v0.8.0"
   description = "The container image to use"
 }
 
