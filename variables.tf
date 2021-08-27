@@ -87,7 +87,7 @@ variable "cpu" {
 
 variable "image" {
   type        = string
-  default     = "casedhub/shell:0.7.1"
+  default     = "ghcr.io/cased/shell:v0.8.0"
   description = "The container image to use"
 }
 
@@ -137,7 +137,7 @@ variable "jump_queries" {
 variable "jump_image" {
   description = "The image to use for the jump container"
   type        = string
-  default     = "ghcr.io/cased/jump:main"
+  default     = "ghcr.io/cased/jump:latest"
 }
 
 variable "custom_environment" {
