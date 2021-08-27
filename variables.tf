@@ -137,7 +137,7 @@ variable "jump_queries" {
 variable "jump_image" {
   description = "The image to use for the jump container"
   type        = string
-  default     = "ghcr.io/cased/jump:main"
+  default     = "ghcr.io/cased/jump:latest"
 }
 
 variable "custom_environment" {
