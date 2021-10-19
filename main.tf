@@ -245,11 +245,6 @@ resource "aws_lb_target_group" "cased-shell-target-80" {
   deregistration_delay = "5"
   preserve_client_ip   = true
 
-  stickiness {
-    enabled = false
-    type    = "lb_cookie"
-  }
-
   dynamic "health_check" {
     for_each = var.http_health_check
 
@@ -276,11 +271,6 @@ resource "aws_lb_target_group" "cased-shell-target-443" {
   vpc_id               = var.vpc_id
   deregistration_delay = "10"
   preserve_client_ip   = true
-
-  stickiness {
-    enabled = false
-    type    = "lb_cookie"
-  }
 
   dynamic "health_check" {
     for_each = var.https_health_check
