@@ -72,7 +72,20 @@ module "cased-shell-container-definition" {
   container_memory             = var.memory
   container_memory_reservation = floor(var.memory / 3)
   container_cpu                = var.cpu
-  environment                  = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [], var.custom_environment)
+  environment = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [], var.custom_environment, [
+    {
+      name  = "STORAGE_S3_REGION"
+      value = aws_s3_bucket.bucket.region
+    },
+    {
+      name  = "STORAGE_S3_ACCESS_KEY_ID"
+      value = aws_iam_access_key.bucket-user-iam-access-key.id
+    },
+    {
+      name  = "STORAGE_S3_ACCESS_KEY_SECRET"
+      value = aws_iam_access_key.bucket-user-iam-access-key.secret
+    }
+  ])
 
   container_depends_on = var.jump_queries != [] ? [
     {
