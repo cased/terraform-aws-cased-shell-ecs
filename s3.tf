@@ -26,14 +26,6 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
-resource "aws_iam_user" "bucket-user" {
-  name = aws_s3_bucket.bucket.bucket
-}
-
-resource "aws_iam_access_key" "bucket-user-iam-access-key" {
-  user = aws_iam_user.bucket-user.name
-}
-
 data "aws_iam_policy_document" "iam-policy-document" {
   // To properly store objects on an encrypted bucket, the policy needs to
   // authorize permission to generate key data when creating objects.
@@ -89,7 +81,9 @@ resource "aws_iam_policy" "bucket-iam-policy" {
   policy = data.aws_iam_policy_document.iam-policy-document.json
 }
 
-resource "aws_iam_user_policy_attachment" "attach-bucket-iam-policy-to-bucket-user" {
-  user       = aws_iam_user.bucket-user.name
-  policy_arn = aws_iam_policy.bucket-iam-policy.arn
+
+# Add the describe-instances policy to the ecs task execution role
+resource "aws_iam_role_policy" "bucket-task-role" {
+  policy = data.aws_iam_policy_document.iam-policy-document.json
+  role   = aws_iam_role.ecs-task-role.0.id
 }
