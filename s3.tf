@@ -4,7 +4,7 @@ resource "aws_kms_key" "bucket-kms-key" {
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket_prefix = "cased-shell-storage-"
+  bucket_prefix = "${local.base_name}-storage-"
   acl           = "private"
   force_destroy = true
 
@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "bucket" {
   }
 
   tags = {
-    Name = "cased-shell-storage"
+    Name = "${local.base_name}-storage"
   }
 
   server_side_encryption_configuration {
@@ -92,4 +92,28 @@ resource "aws_iam_policy" "bucket-iam-policy" {
 resource "aws_iam_user_policy_attachment" "attach-bucket-iam-policy-to-bucket-user" {
   user       = aws_iam_user.bucket-user.name
   policy_arn = aws_iam_policy.bucket-iam-policy.arn
+}
+
+resource "aws_secretsmanager_secret" "access-key-id" {
+  name                    = "${local.base_name}-storage/access-key-id"
+  description             = "The AWS S3 access key ID for the ${local.base_name}-storage bucket."
+  kms_key_id              = aws_kms_key.bucket-kms-key.id
+  recovery_window_in_days = 7
+}
+
+resource "aws_secretsmanager_secret_version" "access-key-id" {
+  secret_id     = aws_secretsmanager_secret.access-key-id.id
+  secret_string = aws_iam_access_key.bucket-user-iam-access-key.id
+}
+
+resource "aws_secretsmanager_secret" "secret-access-key" {
+  name                    = "${local.base_name}-storage/secret-access-key"
+  description             = "The AWS S3 secret access key for the ${local.base_name}-storage bucket."
+  kms_key_id              = aws_kms_key.bucket-kms-key.id
+  recovery_window_in_days = 7
+}
+
+resource "aws_secretsmanager_secret_version" "secret-access-key" {
+  secret_id     = aws_secretsmanager_secret.secret-access-key.id
+  secret_string = aws_iam_access_key.bucket-user-iam-access-key.secret
 }

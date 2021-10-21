@@ -74,16 +74,16 @@ module "cased-shell-container-definition" {
   container_cpu                = var.cpu
   environment = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [], var.custom_environment, [
     {
+      name  = "STORAGE_BACKEND"
+      value = "s3"
+    },
+    {
+      name  = "STORAGE_S3_BUCKET"
+      value = aws_s3_bucket.bucket.bucket
+    },
+    {
       name  = "STORAGE_S3_REGION"
       value = aws_s3_bucket.bucket.region
-    },
-    {
-      name  = "STORAGE_S3_ACCESS_KEY_ID"
-      value = aws_iam_access_key.bucket-user-iam-access-key.id
-    },
-    {
-      name  = "STORAGE_S3_ACCESS_KEY_SECRET"
-      value = aws_iam_access_key.bucket-user-iam-access-key.secret
     }
   ])
 
@@ -96,7 +96,16 @@ module "cased-shell-container-definition" {
 
 
   # Concat these as secrets if their valueFrom/value is set
-  secrets = concat([local.shell_secret_string], var.ssh_key_arn == null ? [] : [local.private_key], var.ssh_passphrase_arn == null ? [] : [local.passphrase])
+  secrets = concat([local.shell_secret_string], var.ssh_key_arn == null ? [] : [local.private_key], var.ssh_passphrase_arn == null ? [] : [local.passphrase], [
+    {
+      name      = "STORAGE_S3_ACCESS_KEY_ID"
+      valueFrom = aws_secretsmanager_secret.access-key-id.arn
+    },
+    {
+      name      = "STORAGE_S3_ACCESS_KEY_SECRET"
+      valueFrom = aws_secretsmanager_secret.secret-access-key.arn
+    }
+  ])
 
   port_mappings = [
     {
