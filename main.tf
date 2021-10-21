@@ -104,11 +104,6 @@ module "cased-shell-container-definition" {
     {
       name      = "STORAGE_S3_SECRET_ACCESS_KEY"
       valueFrom = aws_secretsmanager_secret.secret-access-key.arn
-    },
-    # TODO remove once application uses the appropriately named value above
-    {
-      name      = "STORAGE_S3_ACCESS_KEY_SECRET"
-      valueFrom = aws_secretsmanager_secret.secret-access-key.arn
     }
   ])
 
