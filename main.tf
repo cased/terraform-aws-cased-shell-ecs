@@ -51,7 +51,7 @@ resource "aws_ecs_task_definition" "definition" {
 
   network_mode       = "awsvpc"
   execution_role_arn = aws_iam_role.ecs-task-execution-role.arn
-  task_role_arn      = aws_iam_role.ecs-task-role.0.arn
+  task_role_arn      = var.jump_queries != [] ? aws_iam_role.ecs-task-role.0.arn : null
 
   volume {
     name = "scratch"
@@ -72,7 +72,20 @@ module "cased-shell-container-definition" {
   container_memory             = var.memory
   container_memory_reservation = floor(var.memory / 3)
   container_cpu                = var.cpu
-  environment                  = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [], var.custom_environment)
+  environment = concat(concat(local.environment, var.ssh_username == null ? [] : [local.username]), var.jump_queries != [] ? local.jump_environment : [], var.custom_environment, [
+    {
+      name  = "STORAGE_S3_REGION"
+      value = aws_s3_bucket.bucket.region
+    },
+    {
+      name  = "STORAGE_S3_ACCESS_KEY_ID"
+      value = aws_iam_access_key.bucket-user-iam-access-key.id
+    },
+    {
+      name  = "STORAGE_S3_ACCESS_KEY_SECRET"
+      value = aws_iam_access_key.bucket-user-iam-access-key.secret
+    }
+  ])
 
   container_depends_on = var.jump_queries != [] ? [
     {
@@ -180,7 +193,7 @@ data "aws_iam_policy_document" "ecs-tasks-policy" {
 
 
 # ECS Task Execution Role is associated with a task definition,
-# and represents the permissions for the ECS and Docker daemons.
+# and represents the permissions for the Docker container itself.
 
 # The role itself
 resource "aws_iam_role" "ecs-task-execution-role" {
@@ -201,13 +214,6 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-attachment" {
   role       = aws_iam_role.ecs-task-execution-role.name
 }
 
-# The task role contains the permissions for the task container
-resource "aws_iam_role" "ecs-task-role" {
-  count              = 1
-  name               = "ecs-task-role-${local.base_name}"
-  path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.ecs-tasks-policy.json
-}
 
 ######## Network Load Balancer for Cased Shell ################################
 

@@ -69,6 +69,13 @@ data "aws_iam_policy_document" "describe-instances-policy" {
   }
 }
 
+resource "aws_iam_role" "ecs-task-role" {
+  count              = var.jump_queries != [] ? 1 : 0
+  name               = "ecs-task-role-${local.base_name}"
+  path               = "/"
+  assume_role_policy = data.aws_iam_policy_document.ecs-tasks-policy.json
+}
+
 # Add the describe-instances policy to the ecs task execution role
 resource "aws_iam_role_policy" "describe-instances-role-policy" {
   count  = var.jump_queries != [] ? 1 : 0
