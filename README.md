@@ -8,7 +8,7 @@ and using a Network Load Balancer.
 ```terraform
 module "cased-shell" {
     source  = "cased/terraform-aws-cased-shell-ecs"
-    version = "~> 0.4.0"
+    version = "~> 0.5.0"
 
     # The environment, and the id of the vpc and the cluster where the service will run
     env         = "prod"
