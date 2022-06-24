@@ -152,7 +152,7 @@ variable "custom_environment" {
 variable "custom_secrets" {
   description = "Additional secrets to pass to the shell container."
   type = list(object({
-    name  = string
+    name      = string
     valueFrom = string
   }))
   default = []
