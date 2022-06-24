@@ -67,6 +67,7 @@
 | <a name="input_cased_remote_hostname"></a> [cased\_remote\_hostname](#input\_cased\_remote\_hostname) | The hostname of the Cased remote server, without protocol (e.g., 'cased.com') | `string` | `"cased.com"` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | The CPU allocated to the container | `number` | `180` | no |
 | <a name="input_custom_environment"></a> [custom\_environment](#input\_custom\_environment) | Additional environment variables to pass to the shell container. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
+| <a name="input_custom_secrets"></a> [custom\_secrets](#input\_custom\_secrets) | Additional secrets to pass to the shell container. | <pre>list(object({<br>    name  = string<br>    valueFrom = string<br>  }))</pre> | `[]` | no |
 | <a name="input_grace_period"></a> [grace\_period](#input\_grace\_period) | Startup grace period, or the duration of time the application is expected to fail health checks on startup | `number` | `360` | no |
 | <a name="input_host_autodiscovery"></a> [host\_autodiscovery](#input\_host\_autodiscovery) | deprecated | `bool` | `false` | no |
 | <a name="input_host_autodiscovery_descriptive_tag"></a> [host\_autodiscovery\_descriptive\_tag](#input\_host\_autodiscovery\_descriptive\_tag) | deprecated | `string` | `"Name"` | no |
