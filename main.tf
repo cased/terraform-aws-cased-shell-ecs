@@ -96,7 +96,7 @@ module "cased-shell-container-definition" {
 
 
   # Concat these as secrets if their valueFrom/value is set
-  secrets = concat([local.shell_secret_string], var.ssh_key_arn == null ? [] : [local.private_key], var.ssh_passphrase_arn == null ? [] : [local.passphrase], [
+  secrets = concat(var.custom_secrets, concat([local.shell_secret_string], var.ssh_key_arn == null ? [] : [local.private_key], var.ssh_passphrase_arn == null ? [] : [local.passphrase], [
     {
       name      = "STORAGE_S3_ACCESS_KEY_ID"
       valueFrom = aws_secretsmanager_secret.access-key-id.arn
@@ -105,7 +105,7 @@ module "cased-shell-container-definition" {
       name      = "STORAGE_S3_SECRET_ACCESS_KEY"
       valueFrom = aws_secretsmanager_secret.secret-access-key.arn
     }
-  ])
+  ]))
 
   port_mappings = [
     {

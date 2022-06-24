@@ -149,6 +149,15 @@ variable "custom_environment" {
   default = []
 }
 
+variable "custom_secrets" {
+  description = "Additional secrets to pass to the shell container."
+  type = list(object({
+    name      = string
+    valueFrom = string
+  }))
+  default = []
+}
+
 variable "host_autodiscovery" {
   description = "deprecated"
   type        = bool
